@@ -31,6 +31,9 @@ scale_fill_discrete = scale_fill_viridis_d
 
 ```{r}
 string_vec = c("my", "name", "is", "jeff")
+
+str_detect(string_vec, "jeff")
+str_replace(string_vec, "jeff", "Jeff")
 ```
 
 
@@ -38,9 +41,12 @@ string_vec = c("my", "name", "is", "jeff")
 string_vec = c(
   "i think we all rule for participating",
   "i think i have been caught",
-  "i think this will be quite fun actually",
+  "i think this will be quite fun",
   "it will be fun, i think"
   )
+
+str_detect(string_vec, "^i think")
+str_detect(string_vec, "i think$")
 ```
 
 
@@ -51,6 +57,8 @@ string_vec = c(
   "BBQ and Bushwalking at Molonglo Gorge",
   "BUSH -- LIVE IN CONCERT!!"
   )
+
+str_detect(string_vec, "[Bb]ush")
 ```
 
 
@@ -61,6 +69,8 @@ string_vec = c(
   'she is 5 feet 4 inches tall',
   '3AM - cant sleep :('
   )
+
+str_detect(string_vec, "[0-9][a-zA-Z]")
 ```
 
 
@@ -71,6 +81,8 @@ string_vec = c(
   'my flight is AA711',
   'NetBios: scanning ip 203.167.114.66'
   )
+
+str_detect(string_vec, "7.11")
 ```
 
 
@@ -82,5 +94,31 @@ string_vec = c(
   'I found the answer on pages [6-7]'
   )
 
+str_detect(string_vec, "\\[")
 ```
+
+
+## Factors
+
+```{r}
+factor_vec = factor(c("male", "male", "female", "female"))
+
+factor_vec
+
+as.numeric(factor_vec)
+```
+
+what happens if i relevel ...
+
+```{r}
+factor_vec = fct_relevel(factor_vec, "male")
+
+factor_vec
+
+as.numeric(factor_vec)
+```
+
+
+## NSDUH
+
 
