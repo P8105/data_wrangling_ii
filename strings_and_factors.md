@@ -220,4 +220,16 @@ weather_df %>%
 
 <img src="strings_and_factors_files/figure-gfm/unnamed-chunk-13-1.png" width="90%" />
 
-##
+``` r
+weather_df %>% 
+  mutate(name = fct_reorder(name, tmax)) %>% 
+  lm(tmax ~ name, data = .)
+```
+
+    ## 
+    ## Call:
+    ## lm(formula = tmax ~ name, data = .)
+    ## 
+    ## Coefficients:
+    ##        (Intercept)  nameCentralPark_NY      nameWaikiki_HA  
+    ##              7.482               9.884              22.176
