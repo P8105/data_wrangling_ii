@@ -12,6 +12,10 @@ library(rvest)
     ## 
     ##     guess_encoding
 
+``` r
+library(p8105.datasets)
+```
+
 ## strings and regex
 
 ``` r
@@ -144,12 +148,56 @@ drug_use_html =
   read_html(url)
 ```
 
-Pull the tables out
+Pull the table out
 
 ``` r
 marj_df = 
   drug_use_html |> 
   html_table() |> 
   first() |> 
-  slice(-1)
+  slice(-1) |> 
+  select(-contains("P Value")) |> 
+  pivot_longer(
+    -State, 
+    names_to = "age_year", 
+    values_to = "prev"
+  ) |> 
+  separate(age_year, into = c("age", "year"), sep = "\\(") |> 
+  mutate(
+    year = str_replace(year, "\\)", ""), 
+    prev = str_replace(prev, "[a-c]", ""),
+    prev = as.numeric(prev)
+  )
 ```
+
+make a quick plot
+
+``` r
+marj_df |> 
+  filter(age == "12-17") |> 
+  mutate(State = fct_reorder(State, prev)) |> 
+  ggplot(aes(x = State, y = prev, color = year)) + 
+  geom_point() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+<img src="02_strings_and_factors_files/figure-gfm/unnamed-chunk-11-1.png" alt="" width="90%" />
+
+## NYC Airbnb
+
+``` r
+data(nyc_airbnb)
+
+nyc_airbnb |> 
+  filter(
+    neighbourhood_group == "Manhattan",
+    price < 1000) |> 
+  mutate(neighbourhood = fct_reorder(neighbourhood, price)) |> 
+  ggplot(aes(x = neighbourhood, y = price)) + 
+  geom_boxplot() + 
+  coord_flip()
+```
+
+<img src="02_strings_and_factors_files/figure-gfm/unnamed-chunk-12-1.png" alt="" width="90%" />
+
+## Restaurant inspections
